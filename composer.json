@@ -1,0 +1,6 @@
+{
+    "require": {
+        "botman/driver-web": "^1.5",
+        "doctrine/cache": "^1.7"
+    }
+}

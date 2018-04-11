@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../jsver/test.css">
+    <link rel="stylesheet" href="../slick.css">
+    <link rel="stylesheet" href="../slick-theme.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.0"></script>
+    <title>Botman - Vuejs</title>
+</head>
+
+<body>
+    <div class="chat-widget" id="chat">
+        <div class="chat-header">
+            <div class="chat-title">
+                <h4>Chatbot</h4>
+            </div>
+        </div>
+        <div class='message-area'>
+            <div v-for="item in dataMessage" class="chat-message" v-bind:class="[item.from ? 'chat-message-sender' : 'chat-message-recipient']">
+                <div class="chat-message-wrapper">
+                    <div class="chat-message-content">
+                        <p>{{item.text}}</p>
+                    </div>
+                </div>
+                <div class="services clearfix" v-if="item.type == 'actions'">
+                    <a href="#" class="service-item" v-for="btn in item.actions" v-bind:data="btn.value" v-on:click="senderMessage">{{ btn.text }}</a>
+                </div>
+            </div>
+
+            <!-- <div class="services">
+                <a href="#" class="service-item" v-for="service in datajson">{{ service.name }}</a>
+            </div> -->
+        </div>
+        <div class="area-chat">
+            <input class="ipt-message" v-model="textSender" v-on:keyup.13="senderMessage" autofocus placeholder="Nhập tin nhắn">
+        </div>
+    </div>
+    <script type="text/javascript" src="../jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../slick.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        if($('.services').length) {
+            $('.services').slick({
+                infinite: true,
+                speed: 300,
+                slidesToShow: 1,
+                centerMode: true,
+                variableWidth: true
+            });
+        }
+    });
+    
+    Vue.http.options.emulateJSON = true;
+    var app = new Vue({
+        el: '#chat',
+        data: {
+            textSender: '',
+            dataMessage: [{
+                type: 'text',
+                text: 'Chào mừng bạn đến với Chatbot!',
+                attachment: null,
+                from: false
+            }]
+        },
+
+        methods: {
+            senderMessage: function(event) {
+                var sb = event.currentTarget, ele = sb.getAttribute('data'), text = this.textSender;
+                if(ele) {
+                    text = ele;
+                }
+                if (this.textSender == '') return false;
+                var datatest = {
+                    driver: 'web',
+                    userId: 'jh5yalfferty',
+                    message: text
+                };
+                this.dataMessage.push({
+                    type: 'text',
+                    text: text.toLowerCase(),
+                    attachment: null,
+                    from: (ele ? false : true)
+                });
+
+                this.$http.post('http://localhost:8000', datatest).then(function(response) {
+                    [].push.apply(this.dataMessage, response.body.messages);
+                    this.textSender = '';
+                }).then(function() {
+                    this.scrollToEnd();
+                });
+            },
+            scrollToEnd: function() {
+                var container = document.querySelector(".message-area");
+                container.scrollTo(0, container.scrollHeight);
+            },
+
+        }
+    })
+    </script>
+</body>
+
+</html>

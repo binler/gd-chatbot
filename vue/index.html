@@ -42,86 +42,87 @@
     <script type="text/javascript" src="../jquery-migrate-1.2.1.min.js"></script>
     <script type="text/javascript" src="../slick.js"></script>
     <script type="text/javascript">
-
-    Vue.http.options.emulateJSON = true;
-    var app = new Vue({
-        el: '#chat',
-        data: {
-            textSender: '',
-            dataMessage: []
-        },
-        watch: {
-            // init slide when data change
-            dataMessage: function() {
-                this.$nextTick(function () {
-                    this.initSlick();
-                }.bind(this));
-            }
-        },
-        methods: {
-            senderMessage: function(event) {
-                if (this.textSender == '') return false;
-                let text = this.textSender;
-                this.textSender = '';
-                this._addMessage(text, null, true);
-                this.callApi(text);
+        Vue.http.options.emulateJSON = true;
+        var app = new Vue({
+            el: '#chat',
+            data: {
+                textSender: '',
+                dataMessage: []
             },
-            _addMessage: function(text, attachment = null, from = false, original = {}) {
-                this.dataMessage.push({
-                    text: text.toLowerCase(),
-                    attachment: attachment,
-                    original: original,
-                    from: from,
-                });
-            },
-
-            callApi: function(message, interactive = false, callback) {
-                let datatest = {
-                    driver: 'web',
-                    userId: 'jh5yalfferty',
-                    interactive,
-                    message: message,
-                };
-
-                this.$http.post('http://localhost:8000', datatest).then(function(response) {
-                    const messages = response.body.messages || [];
-                    messages.forEach(msg => {
-                        this._addMessage(msg.text, null, false, msg);
-                    });
-                    if (callback) {
-                        callback(response.body);
-                    }
-                }).then(function() {
-                    this.scrollToEnd();
-                });
-            },
-
-            performAction: function(value, message) {
-                this.callApi(value, true, (response) => {
-                    message.actions = null;
-                });
-            },
-
-            scrollToEnd: function() {
-                let container = document.querySelector(".message-area");
-                container.scrollTo(0, container.scrollHeight);
-            },
-            // init slick slide.
-            initSlick: function(){
-                if($('.services').children().length > 2) {
-                    $('.services').slick({
-                        dots: false,
-                        infinite: true,
-                        speed: 300,
-                        slidesToShow: 1,
-                        centerMode: true,
-                        variableWidth: true
+            watch: {
+                // init slide when data change
+                dataMessage: function () {
+                    this.$nextTick(function () {
+                        this.initSlick();
                     });
                 }
-            }
+            },
+            methods: {
+                senderMessage: function (event) {
+                    if (this.textSender == '') return false;
+                    let text = this.textSender;
+                    this.textSender = '';
+                    this._addMessage(text, null, true);
+                    this.callApi(text);
+                },
+                _addMessage: function (text, attachment = null, from = false, original = {}) {
+                    this.dataMessage.push({
+                        text: text.toLowerCase(),
+                        attachment: attachment,
+                        original: original,
+                        from: from,
+                    });
+                },
 
-        },
-    })
+                callApi: function (message, interactive = false, callback) {
+                    let datatest = {
+                        driver: 'web',
+                        userId: 'jh5yalfferty',
+                        interactive,
+                        message: message,
+                    };
+
+                    this.$http.post('http://localhost:8000', datatest).then(function (response) {
+                        const messages = response.body.messages || [];
+                        messages.forEach(msg => {
+                            this._addMessage(msg.text, null, false, msg);
+                        });
+                        if (callback) {
+                            callback(response.body);
+                        }
+                    }).then(function () {
+                        this.scrollToEnd();
+                    });
+                },
+
+                performAction: function (value, message) {
+                    this.callApi(value, true, (response) => {
+                        message.actions = null;
+                    });
+                },
+
+                scrollToEnd: function () {
+                    let container = document.querySelector(".message-area");
+                    container.scrollTo(0, container.scrollHeight);
+                },
+                // init slick slide.
+                initSlick: function () {
+                    $(".services").each(function (index) {
+                        if ($(this).children().length > 2) {
+                            $(this).slick({
+                                dots: false,
+                                infinite: true,
+                                speed: 300,
+                                slidesToShow: 1,
+                                centerMode: true,
+                                variableWidth: true
+                            });
+                        }
+                    });
+                }
+
+            },
+        })
     </script>
 </body>
 

@@ -35,18 +35,21 @@ class OnboardingConversation extends Conversation
 	    	["title" => "Trao đổi dự án"],
 	    	["title" => "Những câu hỏi khác"],
 	    ]
-    ];
+	];
+	
+	public function getListButton($array_list, $keyword) {
+		$list_button = [];
+		foreach ($array_list as $key => $val) {
+			array_push($list_button, Button::create($val[$keyword])->value($val[$keyword]));
+		}
+		return $list_button;
+	}
 
     public function askService()
     {
     	//$dataMessage = file_get_contents('./data.json');
 		//$services = json_decode($dataMessage, true);
-		$list_service = [];
-		reset($this->services["supports"]);
-		while (list($key, $val) = each($this->services["supports"])) {
-    		array_push($list_service, Button::create($val["title"])->value($val["title"]) );
-		};
-		
+		$list_service = $this->getListButton($this->services["supports"], 'title');
 		$question = Question::create('Hôm nay, bạn muốn hỏi liên quan đến vấn đề gì ạ. Vui lòng chọn các option sau nhé.')
 	        ->fallback('service')
 	        ->callbackId('service_id')
@@ -56,18 +59,28 @@ class OnboardingConversation extends Conversation
 	        // Detect if button was clicked:
 	        if ($answer->isInteractiveMessageReply()) {
 	            $selectedText = $answer->getText();
-	            $item = array_search($selectedText, array_column($services['supports'], 'title'));
+	            if($selectedText == 'Về thông tin tuyển dụng') {
+					$this->askRecruitment();
+				}
+	        }
+	    });
+	}
+	
+	public function askRecruitment() {
+		$list_button = $this->getListButton($this->services["supports"][0]["item"], "title");
+		$question = Question::create('bạn muốn biết thông tin gì về tuyển dụng?')
+	        ->fallback('Recruitment')
+	        ->callbackId('Recruitment_id')
+	        ->addButtons($list_button);
+
+	    $this->ask($question, function (Answer $answer) {
+	        // Detect if button was clicked:
+	        if ($answer->isInteractiveMessageReply()) {
+	            $selectedText = $answer->getText();
 	            $this->say($selectedText);
 	        }
 	    });
-        // $this->ask('Xin chào! Bạn tên gì?', function(Answer $answer) {
-        //     // Save result
-        //     $this->firstname = $answer->getText();
-
-        //     $this->say('Rất vui được gặp bạn '.$this->firstname);
-        //     $this->askEmail();
-        // });
-    }
+	}
 
     // public function askEmail()
     // {

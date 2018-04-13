@@ -12,33 +12,33 @@ class OnboardingConversation extends Conversation
 
 			"level1" => [
 				"item" => [
-					["title" => "Về thông tin tuyển dụng"],
-					["title" => "Trao đổi dự án"],
-					["title" => "Những câu hỏi khác"]
+					["title" => "求人情報について"],
+					["title" => "案件のご相談"],
+					["title" => "その他ご質問"]
 				]
 			],
 
 			"level2" => [
 				"item" => [
-					["title" => "Vị trí đang tuyển dụng"],
-					["title" => "Về trợ cấp phúc lợi"],
-					["title" => "Những câu hỏi khác"]
+					["title" => "募集中のポジションについて"],
+					["title" => "福利厚生について"],
+					["title" => "その他ご質問"]
 				]
 			],
 
 			"level3" => [
 				"item" => [
-					["title" => "Backend Engineer"],
-					["title" => "Frontend Engineer"],
-					["title" => "Bridge Engineer"]
+					["title" => "バックエンドエンジニア"],
+					["title" => "フロントエンドエンジニア"],
+					["title" => "ブリッジエンジニア"]
 				]
 			],
 
 			"level4" => [
 				"item" => [
-					["title" => "Kinh nghiệm PHP　trên 3 năm"],
-					["title" => "Kinh nghiệm Javascript　trên 3 năm"],
-					["title" => "Kinh nghiệm Python　trên 3 năm"]
+					["title" => "PHP経験　3年以上"],
+					["title" => "Javascript経験　3年以上"],
+					["title" => "Python経験　3年以上"]
 				]
 			]
 	    ]
@@ -66,8 +66,8 @@ class OnboardingConversation extends Conversation
 	        // Detect if button was clicked:
 	        if ($answer->isInteractiveMessageReply()) {
 	            $selectedText = $answer->getText();
-	            if($selectedText == 'Về thông tin tuyển dụng') {
-	            	$this->say('Vâng, bạn muốn tìm hiểu về thông tin tuyển dụng đúng không nhỉ!');
+	            if($selectedText == '求人情報について') {
+	            	$this->say('はい、求人情報についてですね');
 					$this->askRecruitment();
 				}
 	        }
@@ -76,7 +76,7 @@ class OnboardingConversation extends Conversation
 	
 	public function askRecruitment() {
 		$list_button = $this->getListButton($this->services["supports"]["level2"]["item"], "title");
-		$question = Question::create('Các mục bên dưới được tìm thấy liên quan đến tuyển dụng.')
+		$question = Question::create('次の項目が見つかりました')
 	        ->fallback('Recruitment')
 	        ->callbackId('Recruitment_id')
 	        ->addButtons($list_button);
@@ -85,8 +85,8 @@ class OnboardingConversation extends Conversation
 	        // Detect if button was clicked:
 	        if ($answer->isInteractiveMessageReply()) {
 	            $selectedText = $answer->getText();
-	            if($selectedText == 'Vị trí đang tuyển dụng') {
-	            	$this->say('Thắc mắc của bạn là về vị trí đang tuyển dụng nhỉ.');
+	            if($selectedText == '募集中のポジションについて') {
+	            	$this->say('お問い合わせは、募集中のポジションについてですね');
 					$this->askPositionRecruiment();
 	            }
 	        }
@@ -95,7 +95,7 @@ class OnboardingConversation extends Conversation
 
 	public function askPositionRecruiment() {
 		$list_button = $this->getListButton($this->services["supports"]["level3"]["item"], "title");
-		$question = Question::create('Các mục bên dưới được tìm thấy liên quan đến tuyển dụng.')
+		$question = Question::create('現在募集中のポジションはこちらです。')
 	        ->fallback('positionRecruitment')
 	        ->callbackId('positionRecruitment_id')
 	        ->addButtons($list_button);
@@ -104,8 +104,8 @@ class OnboardingConversation extends Conversation
 	        // Detect if button was clicked:
 	        if ($answer->isInteractiveMessageReply()) {
 	            $selectedText = $answer->getText();
-	            if($selectedText == 'Backend Engineer') {
-	            	$this->say("Mong muốn của bạn là $selectedText phải không nhỉ?");
+	            if($selectedText == 'バックエンドエンジニア') {
+	            	$this->say("ご希望は、バックエンドエンジニアですね、");
 					$this->askWorkExperient();
 	            }
 	        }
@@ -114,7 +114,7 @@ class OnboardingConversation extends Conversation
 
 	public function askWorkExperient() {
 		$list_button = $this->getListButton($this->services["supports"]["level4"]["item"], "title");
-		$question = Question::create('Trước khi đăng ký ứng tuyển thì bạn cho tôi biết skill của bạn được không?')
+		$question = Question::create('ご応募いただく前にあなたのスキルをお教えてください')
 	        ->fallback('WorkExperient')
 	        ->callbackId('WorkExperient_id')
 	        ->addButtons($list_button);
@@ -123,11 +123,11 @@ class OnboardingConversation extends Conversation
 	        // Detect if button was clicked:
 	        if ($answer->isInteractiveMessageReply()) {
 	            $selectedText = $answer->getText();
-	            if($selectedText == 'Kinh nghiệm PHP　trên 3 năm') {
-	            	$this->say("Vậy là bạn đã có $selectedText nhỉ");
-	            	$this->say("Nếu là người có $selectedText thì ở công ty tôi lương sẽ tầm xxx USD.");
-	            	$this->say("Nhất định hãy gửi CV đến nhân sự công ty tôi nhé.");
-					$this->askService('Bạn còn có thắc mắc nào khác không?');
+	            if($selectedText == 'PHP経験　3年以上') {
+	            	$this->say("あなたはPHP3年以上の経験をお持ちですね");
+	            	$this->say("弊社のPHP経験者ですと、xxx USD～となります。");
+	            	$this->say("是非弊社人事宛にCVをお送りください");
+					$this->askService('その他お問い合わせはございますか');
 	            }
 	        }
 	    });
@@ -136,6 +136,7 @@ class OnboardingConversation extends Conversation
     public function run()
     {
         // This will be called immediately
-        $this->askService('Hôm nay, bạn muốn hỏi liên quan đến vấn đề gì ạ. Vui lòng chọn các option sau nhé.');
+        $this->say("いらっしゃいませ。GDITのバーチャルデスクにようこそ");
+        $this->askService('本日どの様なご用件でしょうか下記よりお選びください');
     }
 }

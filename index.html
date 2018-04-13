@@ -99,7 +99,7 @@
                     message: message,
                 };
 
-                this.$http.post('http://localhost:8000', datatest).then(function(response) {
+                this.$http.post('https://bc04c909.ngrok.io', datatest).then(function(response) {
                     const messages = response.body.messages || [];
                     messages.forEach(msg => {
                         this._addMessage(msg.text, null, false, msg);

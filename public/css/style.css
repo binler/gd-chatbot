@@ -1,5 +1,4 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300);
-html,
 body {
     font-size: 100%;
     /* Adjust font size */
@@ -14,17 +13,38 @@ body {
     font-smoothing: antialiased;
     -webkit-font-smoothing: antialiased;
     text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
-}
-
-* {
     padding: 0;
     margin: 0;
-    border: 0;
-    color: #888;
+    color: #fff;
     font-family: "Source Sans Pro", sans-serif;
-    font-weight: 300;
+}
+*:after, *:before {
     outline: none;
     box-sizing: border-box;
+}
+.container {
+    margin: 0 auto;
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    flex-direction: column;
+}
+h1.jumbotrom {
+    text-align: center;
+    color: #333;
+}
+a {text-decoration: none}
+
+h4, p {margin: 0px; padding: 0px;}
+
+.btn-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: block;
+    background: #ff6600;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .padding {
@@ -94,16 +114,6 @@ body {
     position: relative;
 }
 
-.chat-widget .chat-message .chat-message-wrapper:before {
-    content: " ";
-    display: block;
-    width: 0;
-    height: 0;
-    border: 12px solid transparent;
-    top: 20px;
-    position: absolute;
-    z-index: 2;
-}
 
 .chat-widget .chat-message .chat-message-wrapper p {
     padding: 5px 10px;
@@ -131,8 +141,8 @@ body {
 }
 
 .chat-widget .chat-message.chat-message-sender p {
-    background: #8AC0D9;
-    border-top-color: #76acc5;
+    background: #1E824C;
+    border-top-color: #1E824C;
 }
 
 .chat-widget .chat-message .chat-message-content {
@@ -155,6 +165,10 @@ body {
     background-color: #fff;
     font-size: 14px;
     border-top: 1px solid rgba(0, 0, 0, 0.2);
+    outline: none;
+    border-bottom: 0;
+    border-right: 0;
+    border-left: 0;
 }
 
 .area-chat {
@@ -186,6 +200,19 @@ body {
     position: relative;
 }
 
+.chat-widget .chat-header .btn_close {
+    float: right;
+    display: block;
+    margin-right: 20px;
+}
+
+.chat-widget .chat-header .btn_close span {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.chat-widget .chat-header .chat-title {float: left}
+
 .chat-widget .chat-header h4 {
     color: #fff;
     font-weight: normal;
@@ -201,11 +228,14 @@ body {
     text-decoration: none;
     padding: 5px;
     border-radius: 10px;
-    background: #ed4154;
+    background: #96281B;
     color: #fff;
-    margin-right: 5px;
+    display: block;
+    margin-bottom: 5px;
+    max-width: 200px;
+    text-align: center;
 }
 
 .chat-message .services .service-item:last-child {
-    margin-right: 0px;
+    margin-bottom: 0px;
 }

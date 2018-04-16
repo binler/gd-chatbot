@@ -70,7 +70,7 @@
         data: {
             textSender: '',
             dataMessage: [],
-            serverApi: 'http://localhost:8000',
+            serverApi: 'https://2b8387f8.ngrok.io',
             userId: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
         },
         mounted: function() {
@@ -103,7 +103,6 @@
                     interactive,
                     message: message,
                 };
-
                 this.$http.post(this.serverApi, datatest).then(function(response) {
                     const messages = response.body.messages || [];
                     messages.forEach(msg => {

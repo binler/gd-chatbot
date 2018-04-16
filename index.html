@@ -15,7 +15,6 @@
     <div class="container">
         <h1 class="jumbotrom">GDIT Website</h1>
     </div>
-
     <!-- Chatbot Widget -->
     <a href="#" class="btn-widget">Chatbot</a>
     <div class="chat-widget" id="chat" style="display: none;">
@@ -24,11 +23,11 @@
                 <h4>Chatbot</h4>
             </div>
             <div class="btn_close">
-               <a href="#" class="btn" @click="showChat">X</a> 
+                <a href="#" class="btn" @click="showChat">X</a>
             </div>
         </div>
         <div class='message-area'>
-            <div v-for="item in dataMessage" class="chat-message clearfix" v-bind:class="[item.from ? 'chat-message-sender' : 'chat-message-recipient']">
+            <div v-for="item in dataMessage" class="chat-message clearfix" v-bind:class="[item.from ? 'chat-message-sender' : 'chat-message-recipient']" v-botui-scroll>
                 <div class="chat-message-wrapper">
                     <div class="chat-message-content">
                         <p>{{item.text}}</p>
@@ -46,22 +45,15 @@
         </div>
     </div>
     <!-- /Chatbot Widget -->
-
     <script type="text/javascript">
     var btn_widget = document.querySelector('.btn-widget');
-    btn_widget.addEventListener('click', function(){
+    btn_widget.addEventListener('click', function() {
         var divChat = document.getElementById('chat');
         if (divChat.style.display !== 'none') {
             divChat.style.display = 'none';
-        }
-        else {
+        } else {
             divChat.style.display = 'block';
         }
-    });
-
-    var btn_close = document.querySelector('.btn');
-    btn_close.addEventListener('click', function(){
-        alert('qwd');
     });
 
     Vue.http.options.emulateJSON = true;
@@ -70,7 +62,7 @@
         data: {
             textSender: '',
             dataMessage: [],
-            serverApi: 'https://2b8387f8.ngrok.io',
+            serverApi: 'http://localhost:8000',
             userId: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
         },
         mounted: function() {
@@ -99,7 +91,7 @@
             callApi: function(message, interactive = false, callback) {
                 let datatest = {
                     driver: 'web',
-                    userId:  this.userId,
+                    userId: this.userId,
                     interactive,
                     message: message,
                 };
@@ -112,7 +104,7 @@
                         callback(response.body);
                     }
                 }).then(function() {
-                    this.scrollToEnd();
+                    // this.scrollToEnd();
                 });
             },
 
@@ -121,15 +113,17 @@
                 this.callApi(value, true, (response) => {
                     message.actions = null;
                 });
-            },
-
-            scrollToEnd: function() {
-                let container = document.querySelector(".message-area");
-                container.scrollTo(0, container.scrollHeight);
             }
-
         },
-    })
+    });
+
+    Vue.directive('botui-scroll', {
+        inserted: function inserted(el) {
+            let _container = document.querySelector(".message-area");
+            _container.scrollTop = _container.scrollHeight;
+        }
+    });
+    
     </script>
 </body>
 

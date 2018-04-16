@@ -136,7 +136,6 @@ class OnboardingConversation extends Conversation
     public function run()
     {
         // This will be called immediately
-        $this->say("いらっしゃいませ。GDITのバーチャルデスクにようこそ");
-        $this->askService('本日どの様なご用件でしょうか下記よりお選びください');
+        $this->askService("いらっしゃいませ。GDITのバーチャルデスクにようこそ\n本日どの様なご用件でしょうか下記よりお選びください");
     }
 }

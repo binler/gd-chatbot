@@ -69,9 +69,11 @@
         el: '#chat',
         data: {
             textSender: '',
-            dataMessage: []
+            dataMessage: [],
+            serverApi: 'http://localhost:8000',
+            userId: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
         },
-        created: function() {
+        mounted: function() {
             this.callApi('hi');
         },
         methods: {
@@ -97,12 +99,12 @@
             callApi: function(message, interactive = false, callback) {
                 let datatest = {
                     driver: 'web',
-                    userId: 'jh5yalfferty',
+                    userId:  this.userId,
                     interactive,
                     message: message,
                 };
 
-                this.$http.post('http://localhost:8000', datatest).then(function(response) {
+                this.$http.post(this.serverApi, datatest).then(function(response) {
                     const messages = response.body.messages || [];
                     messages.forEach(msg => {
                         this._addMessage(msg.text, null, false, msg);

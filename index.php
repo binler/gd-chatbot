@@ -15,7 +15,7 @@ $doctrineCacheDriver = new FilesystemCache($cache_path);
 $botman = BotManFactory::create($config, new DoctrineCache($doctrineCacheDriver));
 
 // Give the bot something to listen for.
-$botman->hears('.*(hi|hello|xin chào|xin chao |chao|chào).*', function($bot) {
+$botman->hears('hi', function($bot) {
 	$bot->startConversation(new OnboardingConversation);
 });
 // mặc định khi không hiểu message

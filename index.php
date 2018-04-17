@@ -6,6 +6,7 @@ use BotMan\BotMan\BotManFactory;
 use BotMan\BotMan\Drivers\DriverManager;
 use Doctrine\Common\Cache\FilesystemCache;
 require_once(__DIR__ . '/conversations/mainConversation.php');
+require_once(__DIR__ . '/conversations/TestConversation.php');
 $config = [];
 // Load the driver(s) you want to use
 DriverManager::loadDriver(\BotMan\Drivers\Web\WebDriver::class);
@@ -18,6 +19,11 @@ $botman = BotManFactory::create($config, new DoctrineCache($doctrineCacheDriver)
 $botman->hears('hi', function($bot) {
 	$bot->startConversation(new OnboardingConversation);
 });
+
+$botman->hears('demo', function($bot) {
+	$bot->startConversation(new TestConversation);
+});
+
 // mặc định khi không hiểu message
 $botman->fallback(function($bot) {
 	$bot->reply('Xin lỗi, Ca này khó, chưa chém được nhé!!!');
